@@ -1,13 +1,3 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.egg-info/
-dist/
-build/
-.venv/
-*.db
-
 # Node
 node_modules/
 dist/
