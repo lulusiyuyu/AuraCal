@@ -8,9 +8,14 @@ AuraCal is not a traditional to-do list — it's a **living desktop art piece** 
 
 > 🧽 *"I'm ready! Today you're gonna crush everything!"* — SpongeBob Persona
 
-| English | 中文 |
-|:---:|:---:|
-| ![English UI](docs/screenshots/english.png) | ![中文界面](docs/screenshots/chinese.png) |
+<p align="center">
+  <img src="docs/screenshots/english1.png" alt="English UI 1" width="49%" />
+  <img src="docs/screenshots/english2.png" alt="English UI 2" width="49%" />
+</p>
+<p align="center">
+  <img src="docs/screenshots/chinese1.png" alt="中文界面 1" width="49%" />
+  <img src="docs/screenshots/chinese2.png" alt="中文界面 2" width="49%" />
+</p>
 
 ---
 

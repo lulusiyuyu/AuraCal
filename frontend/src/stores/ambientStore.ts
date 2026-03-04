@@ -66,6 +66,53 @@ const DEFAULT_CONTEXTS: Record<Locale, string> = {
     zh: '我从昨天晚上一直vibe coding到现在，我现在心脏好难受',
 };
 
+/** Default demo data so new users see content immediately (no API key needed) */
+const DEFAULT_DEMO_DATA: Record<Locale, { danmaku: string[]; wordCloud: string[] }> = {
+    en: {
+        danmaku: [
+            'Vibe coding all night long...',
+            'Stay focused, stay sharp 🎯',
+            'One more commit before sunrise ☀️',
+            'Coffee + Code = Magic ✨',
+            'Breathe in... breathe out... 🌊',
+            "You're doing great, keep going!",
+            'Debug mode: ON 🔍',
+        ],
+        wordCloud: [
+            'Focus', '💻', '🔥', 'AuraCal', '✨', 'Code', 'Breathe',
+            '🌊', 'Zen', '☕', 'Flow', '🎯', 'Chill', '🧠', 'Vibe',
+        ],
+    },
+    zh: {
+        danmaku: [
+            '一直在 vibe coding 中...',
+            '保持专注，保持热血 🔥',
+            '日出前再提交一次 ☀️',
+            '咖啡 + 代码 = 魔法 ✨',
+            '吸气……呼气……🌊',
+            '你做得很棒，继续加油！',
+            '调试模式：开启 🔍',
+        ],
+        wordCloud: [
+            '专注', '💻', '🔥', 'AuraCal', '✨', '代码', '呼吸',
+            '🌊', '禅', '☕', '心流', '🎯', '放松', '🧠', '氛围',
+        ],
+    },
+};
+
+/** Convert plain strings into DanmakuMessage[] for the demo pool */
+function makeDemoDanmaku(texts: string[]): DanmakuMessage[] {
+    return texts.map((text, i) => ({
+        id: `demo-${Date.now()}-${i}-${Math.random().toString(36).slice(2, 6)}`,
+        text,
+        persona_name: 'System',
+        color: '#e2e8f0',
+        speed: 'normal' as const,
+        fontSize: 'medium' as const,
+        timestamp: Date.now(),
+    }));
+}
+
 /** Load user-created custom personas from localStorage */
 function loadCustomPersonas(): Persona[] {
     try {
@@ -85,7 +132,7 @@ function resolveBuiltin(bp: BuiltinPersona, locale: Locale): Persona {
         description: locale === 'zh' ? bp.description_zh : bp.description_en,
         description_en: bp.description_en,
         description_zh: bp.description_zh,
-        system_prompt: bp.system_prompt,
+        system_prompt: locale === 'zh' ? bp.system_prompt_zh : bp.system_prompt_en,
         visual_theme: bp.visual_theme,
         danmaku_config: bp.danmaku_config,
         is_builtin: true,
@@ -129,6 +176,10 @@ interface AmbientState {
     setBreathingInterval: (min: number) => void;
     isBreathing: boolean;
     setIsBreathing: (v: boolean) => void;
+
+    // Fetching state (loading indicator)
+    isFetching: boolean;
+    setIsFetching: (v: boolean) => void;
 
     // UI panels
     activePanel: 'none' | 'persona' | 'context' | 'settings';
@@ -230,6 +281,10 @@ export const useAmbientStore = create<AmbientState>((set, get) => ({
     isBreathing: false,
     setIsBreathing: (v) => set({ isBreathing: v }),
 
+    // Fetching state
+    isFetching: false,
+    setIsFetching: (v) => set({ isFetching: v }),
+
     // UI State
     activePanel: 'none',
     setActivePanel: (panel) => set({ activePanel: panel }),
@@ -242,7 +297,7 @@ export const useAmbientStore = create<AmbientState>((set, get) => ({
     locale: initialLocale,
     setLocale: (l) => {
         localStorage.setItem('auracal-locale', l);
-        const { customContext } = get();
+        const { customContext, aiConfig, isFetching } = get();
         const updates: Partial<AmbientState> = { locale: l, personas: buildPersonaList(l) };
         // If context is the other locale's default (or empty), auto-switch to new locale's default
         const otherLocale: Locale = l === 'en' ? 'zh' : 'en';
@@ -250,13 +305,18 @@ export const useAmbientStore = create<AmbientState>((set, get) => ({
             updates.customContext = DEFAULT_CONTEXTS[l];
             localStorage.setItem('auracal-context', DEFAULT_CONTEXTS[l]);
         }
+        // If no API key configured and not actively fetching, swap demo data to match new locale
+        if (!aiConfig.apiKey && !isFetching) {
+            updates.wordCloudWords = DEFAULT_DEMO_DATA[l].wordCloud;
+            updates.danmakuPool = makeDemoDanmaku(DEFAULT_DEMO_DATA[l].danmaku);
+        }
         set(updates);
     },
 
-    // AI Generation Pools
-    danmakuPool: [],
+    // AI Generation Pools — seeded with demo data so new users see content immediately
+    danmakuPool: makeDemoDanmaku(DEFAULT_DEMO_DATA[initialLocale].danmaku),
     setDanmakuPool: (texts) => set({ danmakuPool: texts }),
-    wordCloudWords: [],
+    wordCloudWords: DEFAULT_DEMO_DATA[initialLocale].wordCloud,
     setWordCloudWords: (words) => set({ wordCloudWords: words }),
 
     // Active floating messages

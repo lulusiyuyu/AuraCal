@@ -18,6 +18,8 @@ export function useBreathing() {
     } = useAmbientStore();
 
     const triggerBreath = useCallback(async () => {
+        const { setIsFetching } = useAmbientStore.getState();
+        setIsFetching(true);
         try {
             // Find the active persona
             const persona = personas.find((p) => p.id === activePersonaId) ?? personas[0];
@@ -55,6 +57,8 @@ export function useBreathing() {
             }
         } catch (e) {
             console.warn('Breath error:', e);
+        } finally {
+            useAmbientStore.getState().setIsFetching(false);
         }
     }, [activePersonaId, personas, customContext, aiConfig, locale]);
 

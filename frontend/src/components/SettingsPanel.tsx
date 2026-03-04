@@ -48,7 +48,8 @@ export default function SettingsPanel() {
                         style={{
                             position: 'fixed',
                             bottom: 80,
-                            right: 20,
+                            left: '50%',
+                            transform: 'translateX(-50%)',
                             width: 340,
                             maxWidth: '90vw',
                             padding: 20,

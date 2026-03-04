@@ -37,7 +37,9 @@ const PROMPT_TEMPLATES: Record<Locale, Record<string, string>> = {
     task_body:
       "Based on your character and the current time context, generate:\n" +
       "1. 10-15 danmaku messages of varying length (in your persona's voice — encouragement, quips, or in-character monologue).\n" +
-      "2. 20-30 keywords, short phrases, or emojis related to the current context or goals (for background word cloud).",
+      "2. 20-30 keywords, short phrases, or emojis related to the current context or goals (for background word cloud).\n" +
+      "   IMPORTANT: The word_cloud array MUST contain at least 5-8 pure Emoji characters (e.g. 🔥, 💻, ✨, 🎯, 🧠, 💪, ☕, 🌙). Mix them naturally among the text keywords.\n" +
+      "The user's primary language is English. Please generate all responses naturally in English.",
     format_header: '【Output Format】',
     format_body:
       'You MUST return strict pure JSON. ' +
@@ -54,7 +56,9 @@ const PROMPT_TEMPLATES: Record<Locale, Record<string, string>> = {
     task_body:
       '结合你的角色设定和当前的时间上下文，生成：\n' +
       '1. 10-15句长短不一的弹幕（融入你的语气，可以是鼓励、吐槽或符合人设的自言自语）。\n' +
-      '2. 20-30个与当前上下文或目标相关的关键词、短语或Emoji（用于展示在背景的词云中）。',
+      '2. 20-30个与当前上下文或目标相关的关键词、短语或Emoji（用于展示在背景的词云中）。\n' +
+      '   【强制要求】word_cloud 数组中必须包含至少 5-8 个纯 Emoji 表情符号（如 🔥、💻、✨、🎯、🧠、💪、☕、🌙），将它们自然地混入文字关键词中。\n' +
+      '用户的母语是中文，请使用中文进行自然回复（允许合理混合常见的英文专业术语或名称）。',
     format_header: '【输出格式】',
     format_body:
       '必须返回严格的纯 JSON 格式数据。' +
@@ -113,7 +117,7 @@ ${tmpl.task_body}
 ${tmpl.format_header}
 ${tmpl.format_body}{
   "danmaku": ["message1", "message2", ...],
-  "word_cloud": ["word1", "word2", ...]
+  "word_cloud": ["word1", "🔥", "word2", "💻", "✨", ...]
 }`;
 
   return [

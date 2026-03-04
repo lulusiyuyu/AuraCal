@@ -66,7 +66,8 @@ export default function PersonaManager() {
                         style={{
                             position: 'fixed',
                             bottom: 80,
-                            right: 20,
+                            left: '50%',
+                            transform: 'translateX(-50%)',
                             width: 320,
                             maxWidth: '90vw',
                             maxHeight: '60vh',

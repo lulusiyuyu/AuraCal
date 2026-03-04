@@ -13,6 +13,8 @@ const translations = {
         stopAutoTitle: 'Stop auto-breathing',
         startAutoTitle: 'Start auto-breathing',
 
+        thinking: '🧠 Thinking...',
+
         // Settings
         settings: '⚙️ Settings',
         settingsTitle: 'Settings',
@@ -70,6 +72,8 @@ const translations = {
         startAuto: '▶ 自动',
         stopAutoTitle: '停止自动呼吸',
         startAutoTitle: '开始自动呼吸',
+
+        thinking: '🧠 思考中...',
 
         // Settings
         settings: '⚙️ 设置',

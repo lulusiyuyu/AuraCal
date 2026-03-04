@@ -18,7 +18,7 @@ import './index.css';
 const IDLE_TIMEOUT = 3000;
 
 export default function App() {
-  const { theme, isBreathing, aiConfig, setActivePanel, isToolbarVisible, setToolbarVisible, activePanel, locale } = useAmbientStore();
+  const { theme, isBreathing, isFetching, aiConfig, setActivePanel, isToolbarVisible, setToolbarVisible, activePanel, locale } = useAmbientStore();
   const { triggerBreath, startBreathing, stopBreathing } = useBreathing();
   const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -51,13 +51,20 @@ export default function App() {
   const needsSetup = !aiConfig.apiKey;
 
   const handleReset = () => {
+    const store = useAmbientStore.getState();
     // Stop breathing, clear pools, close panels
-    useAmbientStore.getState().setIsBreathing(false);
-    useAmbientStore.getState().setDanmakuPool([]);
-    useAmbientStore.getState().setWordCloudWords([]);
-    useAmbientStore.getState().setActivePanel('none');
+    store.setIsBreathing(false);
+    store.setDanmakuPool([]);
+    store.setWordCloudWords([]);
+    store.setActivePanel('none');
     // Clear all active floating messages
     useAmbientStore.setState({ messages: [] });
+    // Reset custom context to locale-aware default
+    const defaults: Record<string, string> = {
+      en: "I've been vibe coding since last night and my heart feels awful right now",
+      zh: '我从昨天晚上一直vibe coding到现在，我现在心脏好难受',
+    };
+    store.setCustomContext(defaults[store.locale] || defaults.en);
   };
 
   const handleCanvasClick = (e: React.MouseEvent) => {
@@ -104,8 +111,14 @@ export default function App() {
             </span>
           ) : (
             <>
-              <button className="toolbar-btn" onClick={triggerBreath} title={t(locale, 'triggerBreath')}>
-                {t(locale, 'breathe')}
+              <button
+                className="toolbar-btn"
+                onClick={triggerBreath}
+                title={t(locale, 'triggerBreath')}
+                disabled={isFetching}
+                style={isFetching ? { opacity: 0.5, cursor: 'wait' } : undefined}
+              >
+                {isFetching ? t(locale, 'thinking') : t(locale, 'breathe')}
               </button>
               <button
                 className={`toolbar-btn ${isBreathing ? 'active' : ''}`}
