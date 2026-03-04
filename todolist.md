@@ -95,17 +95,17 @@
 > **目标**：一键部署，有个可访问的 Demo 链接写简历。
 
 ### 6. 配置 Vite 构建
-- [ ] 修改 `vite.config.ts`，设置 `base: '/AuraCal/'`（GitHub Pages 子路径）
-- [ ] 确保 `npm run build` 输出到 `dist/`，所有资源路径正确
+- [x] 修改 `vite.config.ts`，设置 `base: '/AuraCal/'`（GitHub Pages 子路径）
+- [x] 确保 `npm run build` 输出到 `dist/`，所有资源路径正确
 
 ### 7. GitHub Actions 自动部署
 我本地的WSL已经部署好了gh cli
-- [ ] 推送代码到 GitHub：`lulusiyuyu/AuraCal`
-- [ ] 创建 `.github/workflows/deploy.yml`
+- [x] 推送代码到 GitHub：`lulusiyuyu/AuraCal`
+- [x] 创建 `.github/workflows/deploy.yml`
   - 触发条件：push to main
   - 步骤：checkout → setup node → npm install → npm run build → deploy to gh-pages
-- [ ] 在 GitHub repo Settings → Pages 选择 gh-pages 分支
-- [ ] 验证：`https://lulusiyuyu.github.io/AuraCal/` 可正常访问
+- [x] 在 GitHub repo Settings → Pages 选择 GitHub Actions 部署方式
+- [x] 验证：`https://lulusiyuyu.github.io/AuraCal/` 部署成功
 
 ### 8. 最终验证
 - [ ] 用手机访问 GitHub Pages 链接
