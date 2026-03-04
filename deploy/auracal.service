@@ -1,0 +1,15 @@
+[Unit]
+Description=AuraCal Backend (Uvicorn)
+After=network.target redis-server.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/auracal/backend
+ExecStart=/opt/auracal/backend/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 1
+Restart=always
+RestartSec=5
+Environment=PATH=/opt/auracal/backend/.venv/bin:/usr/bin
+
+[Install]
+WantedBy=multi-user.target
