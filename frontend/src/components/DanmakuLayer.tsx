@@ -9,11 +9,14 @@ const MAX_ACTIVE = 20; // cap concurrent messages to prevent DOM bloat
 
 export default function DanmakuLayer() {
     const containerRef = useRef<HTMLDivElement>(null);
-    const { danmakuPool } = useAmbientStore();
+    const { danmakuPool, theme } = useAmbientStore();
     const poolRef = useRef(danmakuPool);
+    const themeRef = useRef(theme);
     const poolIndexRef = useRef(0);
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const activeCountRef = useRef(0);
+
+    useEffect(() => { themeRef.current = theme; }, [theme]);
 
     useEffect(() => {
         poolRef.current = danmakuPool;
@@ -29,13 +32,18 @@ export default function DanmakuLayer() {
         poolIndexRef.current++;
 
         // Randomize properties
+        const isLight = themeRef.current === 'light';
         const speeds: Array<'slow' | 'normal' | 'fast'> = ['slow', 'normal', 'fast'];
         const speed = speeds[Math.floor(Math.random() * speeds.length)];
         const duration = SPEED_DURATIONS[speed];
         const baseSize = FONT_SIZES[msg.fontSize] || 22;
         const fontSize = baseSize + (Math.random() - 0.5) * 8;
         const top = 8 + Math.random() * 76; // 8% to 84%
-        const fontWeight = Math.random() > 0.5 ? 600 : 400;
+        // Light mode: always bold; dark mode: random weight
+        const fontWeight = isLight ? 700 : (Math.random() > 0.5 ? 600 : 400);
+        // Light mode: use dark ink color instead of whitish persona color
+        const color = isLight ? 'rgba(15, 23, 42, 0.92)' : msg.color;
+        const opacity = isLight ? 0.82 : 0.65;
 
         // Create DOM element directly for zero-overhead animation
         const el = document.createElement('div');
@@ -47,12 +55,12 @@ export default function DanmakuLayer() {
             white-space: nowrap;
             font-size: ${fontSize}px;
             font-weight: ${fontWeight};
-            color: ${msg.color};
+            color: ${color};
             pointer-events: none;
             user-select: none;
             z-index: 30;
             will-change: transform;
-            opacity: 0.35;
+            opacity: ${opacity};
             animation: danmaku-scroll ${duration}s linear forwards;
         `;
 

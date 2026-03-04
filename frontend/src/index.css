@@ -311,6 +311,15 @@ body {
   margin-top: 8px;
 }
 
+/* Light mode: heavier weights for better visibility */
+[data-theme='light'] .clock-time {
+  font-weight: 700;
+}
+
+[data-theme='light'] .clock-date {
+  font-weight: 600;
+}
+
 /* ── Breathing Watermark ───────────────────────────────────── */
 
 .breathing-watermark {

@@ -7,7 +7,8 @@ import { t } from '../i18n';
 
 export default function ClockWidget() {
     const [time, setTime] = useState(new Date());
-    const { locale } = useAmbientStore();
+    const { locale, theme } = useAmbientStore();
+    const isLight = theme === 'light';
 
     useEffect(() => {
         const timer = setInterval(() => setTime(new Date()), 1000);
@@ -28,7 +29,7 @@ export default function ClockWidget() {
             <motion.h1
                 className="clock-time"
                 animate={{
-                    opacity: [0.7, 1, 0.7],
+                    opacity: isLight ? [0.88, 1, 0.88] : [0.75, 1, 0.75],
                     scale: [1, 1.02, 1],
                 }}
                 transition={{
@@ -42,7 +43,7 @@ export default function ClockWidget() {
             <motion.div
                 className="clock-date"
                 animate={{
-                    opacity: [0.5, 0.8, 0.5],
+                    opacity: isLight ? [0.72, 0.92, 0.72] : [0.58, 0.82, 0.58],
                 }}
                 transition={{
                     duration: 6,

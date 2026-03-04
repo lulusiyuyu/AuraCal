@@ -15,6 +15,7 @@ interface WordItem {
 }
 
 function FloatingWord({ word, index }: { word: WordItem; index: number }) {
+    const theme = useAmbientStore((s) => s.theme);
     const x = useMotionValue(word.x);
     const y = useMotionValue(word.y);
 
@@ -31,10 +32,15 @@ function FloatingWord({ word, index }: { word: WordItem; index: number }) {
         return () => clearInterval(interval);
     }, [word.x, word.y, x, y, index]);
 
+    const isLight = theme === 'light';
+    // In light mode show higher opacity and bold weight
+    const displayOpacity = isLight ? Math.min(word.opacity * 2.2, 0.72) : word.opacity;
+    const fontWeight = isLight ? 600 : 300;
+
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: word.opacity, scale: 1 }}
+            animate={{ opacity: displayOpacity, scale: 1 }}
             exit={{ opacity: 0, scale: 0.5 }}
             transition={{ duration: 2, ease: 'easeOut' }}
             style={{
@@ -44,9 +50,9 @@ function FloatingWord({ word, index }: { word: WordItem; index: number }) {
                 x: springX,
                 y: springY,
                 fontSize: word.size,
-                fontWeight: 300,
+                fontWeight,
                 color: 'var(--text-primary)',
-                opacity: word.opacity,
+                opacity: displayOpacity,
                 rotate: word.rotation, // Use Framer Motion's rotate instead of CSS transform
                 pointerEvents: 'none',
                 userSelect: 'none',
@@ -76,9 +82,9 @@ export default function WordCloudLayer() {
             text,
             x: vw * 0.1 + Math.random() * vw * 0.8,
             y: vh * 0.1 + Math.random() * vh * 0.8,
-            // 20-30 words, make them vary in size wildly but stay ambient
             size: 16 + Math.random() * 28,
-            opacity: 0.10 + Math.random() * 0.20, // INCREASED OPACITY to be visible
+            // Base opacity used for dark mode; FloatingWord multiplies for light mode
+            opacity: 0.22 + Math.random() * 0.22, // 0.22–0.44 in dark
             rotation: (Math.random() - 0.5) * 30,
         }));
 
