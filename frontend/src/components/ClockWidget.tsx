@@ -29,7 +29,7 @@ export default function ClockWidget() {
             <motion.h1
                 className="clock-time"
                 animate={{
-                    opacity: isLight ? [0.88, 1, 0.88] : [0.75, 1, 0.75],
+                    opacity: isLight ? [0.88, 1, 0.88] : [0.88, 1, 0.88],
                     scale: [1, 1.02, 1],
                 }}
                 transition={{
@@ -43,7 +43,7 @@ export default function ClockWidget() {
             <motion.div
                 className="clock-date"
                 animate={{
-                    opacity: isLight ? [0.72, 0.92, 0.72] : [0.58, 0.82, 0.58],
+                    opacity: isLight ? [0.72, 0.92, 0.72] : [0.75, 0.95, 0.75],
                 }}
                 transition={{
                     duration: 6,

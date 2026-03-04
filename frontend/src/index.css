@@ -24,16 +24,16 @@
 [data-theme='dark'] {
   --bg-primary: #0a0a0f;
   --bg-secondary: #111118;
-  --text-primary: rgba(255, 255, 255, 0.87);
-  --text-secondary: rgba(255, 255, 255, 0.5);
-  --text-muted: rgba(255, 255, 255, 0.25);
+  --text-primary: rgba(255, 255, 255, 1.0);
+  --text-secondary: rgba(255, 255, 255, 0.75);
+  --text-muted: rgba(255, 255, 255, 0.45);
   --accent-glow: #6366f1;
   --accent-success: #22c55e;
-  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.12);
   --glass-bg: rgba(20, 20, 30, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.06);
-  --btn-bg: rgba(255, 255, 255, 0.06);
-  --btn-hover: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --btn-bg: rgba(255, 255, 255, 0.08);
+  --btn-hover: rgba(255, 255, 255, 0.14);
 }
 
 [data-theme='light'] {

@@ -84,7 +84,7 @@ export default function WordCloudLayer() {
             y: vh * 0.1 + Math.random() * vh * 0.8,
             size: 16 + Math.random() * 28,
             // Base opacity used for dark mode; FloatingWord multiplies for light mode
-            opacity: 0.22 + Math.random() * 0.22, // 0.22–0.44 in dark
+            opacity: 0.32 + Math.random() * 0.24, // 0.32–0.56 in dark
             rotation: (Math.random() - 0.5) * 30,
         }));
 

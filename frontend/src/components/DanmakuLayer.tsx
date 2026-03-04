@@ -43,7 +43,7 @@ export default function DanmakuLayer() {
         const fontWeight = isLight ? 700 : (Math.random() > 0.5 ? 600 : 400);
         // Light mode: use dark ink color instead of whitish persona color
         const color = isLight ? 'rgba(15, 23, 42, 0.92)' : msg.color;
-        const opacity = isLight ? 0.82 : 0.65;
+        const opacity = isLight ? 0.82 : 0.78;
 
         // Create DOM element directly for zero-overhead animation
         const el = document.createElement('div');
